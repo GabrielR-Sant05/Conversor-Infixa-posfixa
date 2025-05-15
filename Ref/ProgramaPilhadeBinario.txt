@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+struct pilha {
+    int Elementos[20];
+    int Topo;
+};
+typedef struct pilha PILHA;
+
+int main() {
+    PILHA p;
+    int num;
+    IniciaP(&p);
+    printf("Digite um numero natural: ");
+    scanf("%d", &num);
+    PUSH(&p, num);
+    MostrarP(p);
+    return 0;
+}
+
+void IniciaP(PILHA *p) {
+    p->Topo = -1;
+}
+
+void PUSH(PILHA *p, int num) {
+    int resto;
+    while (num > 0) {
+        resto = num % 2;
+        num = num / 2;
+        p->Topo++;
+        p->Elementos[p->Topo] = resto;
+    }
+}
+
+void MostrarP(PILHA p) {
+    int i;
+    for (i = p.Topo; i >= 0; i--) {
+        printf("%d", p.Elementos[i]);
+    }
+    printf("\n");
+}

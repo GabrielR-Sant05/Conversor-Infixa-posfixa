@@ -1,0 +1,105 @@
+#include <stdio.h>
+
+struct funcionario { 
+    char nome[50];
+    float salarioB;
+    float salarioF;
+    float vendasNov;
+    float vendasDez;
+    float vendasJan;
+    float pontNov;
+    float pontDez;
+    float pontJan;
+    float pontTotal;
+    float bonus;
+};
+
+typedef struct funcionario FUNC;
+
+int main(){
+    FUNC f[3];
+    cadastro(f);
+    calcularPont(f);
+    calcularBonus(f);
+    calcMaioreMenor(f);
+    salarioFinal(f);
+}
+
+void cadastro(FUNC f[3]){
+    int i;
+    for(i = 0; i < 3; i++){
+        fflush(stdin);
+        printf("Digite o nome do funcionario \n");
+        gets(f[i].nome);
+        printf("Digite o salario base \n");
+        scanf("%f", &f[i].salarioB);
+        printf("Digite o valor das vendas em novembro \n");
+        scanf("%f", &f[i].vendasNov);
+        printf("Digite o valor das vendas em dezembro \n");
+        scanf("%f", &f[i].vendasDez);
+        printf("Digite o valor das vendas em janeiro \n");
+        scanf("%f", &f[i].vendasJan);
+    }
+}
+
+void calcularPont(FUNC f[3]){
+    int i;
+    for(i = 0; i < 3; i++){
+        f[i].pontNov = f[i].vendasNov/100;
+        f[i].pontDez = f[i].vendasDez/100;
+        f[i].pontJan = f[i].vendasJan/100;
+    }
+}
+
+void calcularBonus(FUNC f[3]){
+    int i;
+    for(i = 0; i < 3; i++){
+        f[i].pontTotal = f[i].pontNov + f[i].pontDez + f[i].pontJan;
+        if(f[i].pontTotal < 50){
+            f[i].bonus = 0;
+        }
+        else if(f[i].pontTotal < 100){
+            f[i].bonus = 100.00;
+        }
+        else if(f[i].pontTotal < 150){
+            f[i].bonus = 1000.00;
+        }
+        else{
+            f[i].bonus = 2000.00;
+        }
+        printf("\n Bonus do funcionario: %s = %.2f", f[i].nome, f[i].bonus);
+    }
+}
+
+void calcMaioreMenor(FUNC f[3]) {
+    int i;
+    int indiceMaior = 0;
+    int indiceMenor = 0;
+    float maiorPontuacao = f[0].pontTotal;
+    float menorPontuacao = f[0].pontTotal;
+    for(i = 1; i < 3; i++) {
+        if(f[i].pontTotal > maiorPontuacao) {
+            maiorPontuacao = f[i].pontTotal;
+            indiceMaior = i;
+        }
+       else if(f[i].pontTotal < menorPontuacao) {
+            menorPontuacao = f[i].pontTotal;
+            indiceMenor = i;
+        }
+    }
+    printf("\n\nFuncionario com MAIS pontos:\n");
+    printf("Nome: %s\n", f[indiceMaior].nome);
+    printf("Pontos: %.2f\n", f[indiceMaior].pontTotal);
+
+    printf("\nFuncionario com MENOS pontos:\n");
+    printf("Nome: %s\n", f[indiceMenor].nome);
+    printf("Pontos: %.2f\n", f[indiceMenor].pontTotal);
+}
+
+void salarioFinal(FUNC f[3]){
+    int i;
+    for(i = 0; i < 3; i++){
+        f[i].salarioF = f[i].salarioB + f[i].bonus;
+        printf("\n Salario final: %s = %.2f", f[i].nome, f[i].salarioF);
+    }
+}

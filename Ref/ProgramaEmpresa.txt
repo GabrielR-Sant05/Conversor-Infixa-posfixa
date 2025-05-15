@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <string.h>
+
+struct funcionario {
+    int codigo;
+    char nome[50];
+    int anoAdm;
+    char cargo[30];
+    float salarioB;
+    int faltasM;
+};
+
+typedef struct funcionario FUNC;
+
+int main() {
+
+    FUNC f[50];
+    int i;
+    int nroF = 0;
+    int anosX;
+
+    do {
+        printf("\n 1. Cadastrar novo funcionario");
+        printf("\n 2. Reduzir salario de funcionarios com 3 faltas");
+        printf("\n 3. Mostrar funcionarios com salarios entre 3500 e 4000");
+        printf("\n 4. Mostrar funcionarios com mais de 10 anos de trabalho na empresa");
+        printf("\n 5. Aumentar salario de funcionarios com cargo de chefia");
+        printf("\n 6. Sair do sistema \n");
+        scanf("%d", &i);
+        switch(i) {
+            case 1:
+                if (nroF <= 49) {
+                    cadastro(f, nroF);
+                    nroF++;
+                }
+                else {
+                    printf("\n Limite de funcionarios atingido");
+                }
+                break;
+
+            case 2:
+                for (int j = 0; j < nroF; j++) {
+                    if (f[j].faltasM >= 3) {
+                        f[j].salarioB -= f[j].salarioB * 0.10;
+                        printf("\nFuncionario %d teve seu salario reduzido para: %.2f", f[j].codigo, f[j].salarioB);
+                    }
+                }
+                break;
+            
+            case 3:
+                for (int j = 0; j < nroF; j++) {
+                    if (f[j].salarioB >= 3500 && f[j].salarioB <= 4000) {
+                        printf("\n O funcionario %d, chamado %s, que trabalha conosco desde %d, do cargo %s, tem salario de %.2f, e %d faltas", f[j].codigo, f[j].nome, f[j].anoAdm, f[j].cargo, f[j].salarioB, f[j].faltasM);
+                    }
+                }
+                break;
+
+            case 4:
+                for (int j = 0; j < nroF; j++) {
+                    anosX = 2025 - f[j].anoAdm;
+                    if (anosX >= 10) {
+                        printf("\n O funcionario %d, chamado %s, que trabalha conosco desde %d, do cargo %s, tem salario de %.2f, e %d faltas", f[j].codigo, f[j].nome, f[j].anoAdm, f[j].cargo, f[j].salarioB, f[j].faltasM);
+                    }
+                }
+                break;
+
+            case 5:
+                for (int j = 0; j < nroF; j++) {
+                    if (strcmp(f[j].cargo, "gerente TI") == 0 || strcmp(f[j].cargo, "gerente RH") == 0 || strcmp(f[j].cargo, "CEO") == 0) {
+                        f[j].salarioB += f[j].salarioB * 0.15;
+                        printf("\nFuncionario %d teve seu salario aumentado para: %.2f", f[j].codigo, f[j].salarioB);
+                    }
+                }
+                break;
+
+            case 6:
+                printf("\n Obrigado por usar o programa");
+                break;
+
+            default:
+                printf("Opcao invalida");
+        }
+    } while(i != 6);
+    
+    return 0;
+}
+
+void cadastro(FUNC f[], int nroF) {
+    printf("\n Digite o codigo do funcionario \n");
+    scanf("%d", &f[nroF].codigo);
+    fflush(stdin);
+    printf("\n Digite o nome do funcionario \n");
+    fgets(f[nroF].nome, 50, stdin);
+    f[nroF].nome[strcspn(f[nroF].nome, "\n")] = 0;
+    printf("\n Digite o ano de admissao do funcionario \n");
+    scanf("%d", &f[nroF].anoAdm);
+    fflush(stdin);
+    printf("\n Digite o cargo do funcionario \n");
+    fgets(f[nroF].cargo, 30, stdin);
+    f[nroF].cargo[strcspn(f[nroF].cargo, "\n")] = 0;
+    printf("\n Digite o salario base do funcionario \n");
+    scanf("%f", &f[nroF].salarioB);
+    printf("\n Digite a quantidade de faltas mensais do funcionario \n");
+    scanf("%d", &f[nroF].faltasM);
+}
