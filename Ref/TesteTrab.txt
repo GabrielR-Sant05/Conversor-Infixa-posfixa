@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char c) {
+    stack[++top] = c;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+char peek() {
+    return stack[top];
+}
+
+int isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+}
+
+int precedence(char c) {
+    switch (c) {
+        case '^': return 3;
+        case '*': case '/': return 2;
+        case '+': case '-': return 1;
+        default: return 0;
+    }
+}
+
+void infixToPostfix(char *infix, char *postfix) {
+    int i = 0, j = 0;
+    char c;
+
+    while ((c = infix[i++]) != '\0') {
+        if (isspace(c)) continue;
+
+        if (isalnum(c)) {
+            postfix[j++] = c;
+        } else if (c == '(') {
+            push(c);
+        } else if (c == ')') {
+            while (top != -1 && peek() != '(')
+                postfix[j++] = pop();
+            pop(); // remove '('
+        } else if (isOperator(c)) {
+            while (top != -1 && precedence(peek()) >= precedence(c))
+                postfix[j++] = pop();
+            push(c);
+        }
+    }
+
+    while (top != -1)
+        postfix[j++] = pop();
+
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX], postfix[MAX];
+
+    printf("Expressao infixa: ");
+    fgets(infix, MAX, stdin);
+
+    infixToPostfix(infix, postfix);
+    printf("Expressao posfixa: %s\n", postfix);
+
+    return 0;
+}

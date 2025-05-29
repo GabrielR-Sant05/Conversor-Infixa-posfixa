@@ -1,0 +1,94 @@
+#include<stdio.h>
+#define TAM 20
+struct pilha{
+    int elemento[TAM];
+    int Topo;
+};
+typedef struct pilha PILHA;
+
+int main(){
+    PILHA p;
+    iniciaP(&p);
+    int op;
+    int num;
+    do{
+        printf("\n 1. Empilhar");
+        printf("\n 2. Mostrar Topo");
+        printf("\n 3. Desempilhar");
+        printf("\n 4. Mostrar Pilha");
+        printf("\n 5. Sair");
+        printf("\n Digite sua opcao");
+        scanf("%d", &op);
+
+        switch(op){
+            case 1:
+            printf("\n Digite o que deseja empilhar");
+            scanf("%d", &num);
+            PUSH(&p, num);
+            break;
+
+            case 2:
+            num = getTopo(p);
+            printf("\n Elemento do Topo: %d", num);
+            break;
+
+            case 3:
+            POP(&p);
+            break;
+
+            case 4:
+            Mostrar(p);
+            break;
+
+            case 5:
+            printf("\n Obrigado por usar o programa");
+            break;
+
+            default:
+            printf("\n Opcao invaalida");
+        }
+    }while(op != 5);
+    return 0;
+}
+
+void iniciaP(PILHA *p){
+    p->Topo = -1;
+}
+
+void PUSH(PILHA *p, int num){
+    if(p->Topo == TAM-1){
+        printf("\n Pilha cheia");
+    }
+    else{
+        p->Topo++;
+        p->elemento[p->Topo] = num;
+    }
+}
+
+int getTopo(PILHA p){
+    int num;
+    if(p.Topo == -1){
+        printf("\n Pilha Vazia");
+        return 0;
+    }
+    else{
+        num = p.elemento[p.Topo];
+        return num;
+    }
+}
+
+void POP(PILHA *p){
+    if(p->Topo == -1){
+        printf("\n Pilha Vazia");
+    }
+    else{
+        p->Topo--;
+    }
+}
+
+void Mostrar(PILHA p){
+    int i;
+    for(i=0; i<=p.Topo; i++){
+        printf("\n Pilha: %d", p.elemento[i]);
+    }
+}
